@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  frontend:
+    build: .
+    container_name: frontend-dev
+    command: yarn dev --host
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/usr/src/frontend
+      - /usr/src/frontend/node_modules
+    networks:
+      - coffee-shope-network
+
+networks:
+  coffee-shope-network:
+    external: true   # dùng chung với backend nếu đã có app-network
