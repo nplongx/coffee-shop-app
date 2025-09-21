@@ -3,6 +3,7 @@ version: "3"
 services:
   frontend:
     build: .
+    image: coffee-frontend
     container_name: frontend-dev
     command: yarn dev --host
     ports:

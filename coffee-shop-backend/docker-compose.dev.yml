@@ -1,6 +1,6 @@
 version: '3'
 
 services:
-  node-app:
+  coffee-backend:
     container_name: backend-dev
     command: yarn dev -L

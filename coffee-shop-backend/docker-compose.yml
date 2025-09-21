@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  node-app:
+  coffee-backend:
     build: .
-    image: node-app
+    image: coffee-backend
     environment:
       - MONGODB_URL=mongodb://mongodb:27017/coffee-shop
     ports:
@@ -11,7 +11,7 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - .:/usr/src/node-app
+      - .:/usr/src/coffee-backend
     networks:
       - coffee-shope-network
 

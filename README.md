@@ -38,7 +38,11 @@ cp coffee-shop-backend/.env.example coffee-shop-backend/.env
 
 3. Start the application using Docker Compose:
 ```bash
-docker-compose up --build
+cd coffee-shop-frontedn
+docker-compose up -d
+
+cd coffee-shop-backend
+yarn docker:dev -d
 ```
 
 The application will be available at:
@@ -95,16 +99,8 @@ JWT_REFRESH_EXPIRATION_DAYS=30
 ## Testing
 
 ### Backend Tests
-```bash
-cd coffee-shop-backend
-npm test
-```
 
 ### Frontend Tests
-```bash
-cd coffee-shop-frontend
-npm test
-```
 
 ## API Documentation
 
