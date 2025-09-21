@@ -23,7 +23,7 @@ coffee-shop-app/
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/nplongx/coffee-shop-app.git
 cd coffee-shop-app
 ```
 
@@ -50,7 +50,7 @@ The application will be available at:
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/nplongx/coffee-shop-app.git
 cd coffee-shop-app
 ```
 
@@ -72,7 +72,7 @@ npm run dev
 
 4. Access the application:
 - Frontend: http://localhost:5173
-- Backend API: http://localhost:3000/v1
+- Backend API: http://localhost:3000
 - API Documentation: http://localhost:3000/v1/docs
 
 ## Environment Variables
