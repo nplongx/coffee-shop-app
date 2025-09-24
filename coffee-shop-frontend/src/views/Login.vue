@@ -10,6 +10,10 @@
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required />
       </div>
+      <div>
+        <p>Don't have an account? <router-link to="/register">Register here</router-link></p>
+        <p>Forgot your password? <router-link to="/forgot-password">Reset Password</router-link></p>
+      </div>
       <button type="submit">Login</button>
     </form>
   </div>

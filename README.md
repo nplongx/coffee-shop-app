@@ -38,7 +38,7 @@ cp coffee-shop-backend/.env.example coffee-shop-backend/.env
 
 3. Start the application using Docker Compose:
 ```bash
-cd coffee-shop-frontedn
+cd coffee-shop-frontend
 docker-compose up -d
 
 cd coffee-shop-backend

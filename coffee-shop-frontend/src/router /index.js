@@ -2,11 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import About from '@/components/About.vue'
 import ProductPage from '@/views/ProductPage.vue'
 import Login from '@/views/Login.vue'
+import { authRouter } from './auth'
 
 const routes = [
+  ...authRouter,
   { path: '/about', name: 'About', component: About },
   { path: '/', name: 'Products', component: ProductPage },
-  { path: '/login', name: 'Login', component: Login },
   { path: '/products/:id', name: 'ProductDetails', component: () => import('@/views/ProductDetail.vue'), props: true }
 ]
 
