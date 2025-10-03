@@ -36,7 +36,12 @@ cp coffee-shop-frontend/.env.example coffee-shop-frontend/.env
 cp coffee-shop-backend/.env.example coffee-shop-backend/.env
 ```
 
-3. Start the application using Docker Compose:
+3. Create netword:
+```bash
+docker network create coffee-shope-network
+```
+
+4. Start the application using Docker Compose:
 ```bash
 cd coffee-shop-frontend
 docker-compose up -d

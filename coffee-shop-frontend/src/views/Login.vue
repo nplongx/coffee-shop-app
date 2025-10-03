@@ -12,7 +12,7 @@
       </div>
       <div>
         <p>Don't have an account? <router-link to="/register">Register here</router-link></p>
-        <p>Forgot your password? <router-link to="/forgot-password">Reset Password</router-link></p>
+        <p>Forgot your password? <router-link to="/forgot-password">Forgot password</router-link></p>
       </div>
       <button type="submit">Login</button>
     </form>

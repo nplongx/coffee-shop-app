@@ -1,5 +1,7 @@
 const faker = require('faker');
 const { User } = require('../../../src/models');
+const UserDomain = require('../../../src/modules/user/domain/user.domain');
+const Email = require('../../../src/modules/user/domain/email');
 
 describe('User model', () => {
   describe('User validation', () => {
@@ -13,33 +15,39 @@ describe('User model', () => {
       };
     });
 
-    test('should correctly validate a valid user', async () => {
-      await expect(new User(newUser).validate()).resolves.toBeUndefined();
+    // FIX: Đã thay thế .resolves.toBeUndefined() bằng .not.toThrow()
+    test('should correctly validate a valid user', () => {
+      expect(() => new UserDomain(newUser)).not.toThrow();
     });
 
-    test('should throw a validation error if email is invalid', async () => {
+    // FIX: Đã thay thế .rejects.toThrow() bằng expect(() => ...).toThrow()
+    test('should throw a validation error if email is invalid', () => {
       newUser.email = 'invalidEmail';
-      await expect(new User(newUser).validate()).rejects.toThrow();
+      expect(() => new UserDomain(newUser)).toThrow();
     });
 
-    test('should throw a validation error if password length is less than 8 characters', async () => {
+    // FIX: Đã thay thế .rejects.toThrow() bằng expect(() => ...).toThrow()
+    test('should throw a validation error if password length is less than 8 characters', () => {
       newUser.password = 'passwo1';
-      await expect(new User(newUser).validate()).rejects.toThrow();
+      expect(() => new UserDomain(newUser)).toThrow();
     });
 
-    test('should throw a validation error if password does not contain numbers', async () => {
+    // FIX: Đã thay thế .rejects.toThrow() bằng expect(() => ...).toThrow()
+    test('should throw a validation error if password does not contain numbers', () => {
       newUser.password = 'password';
-      await expect(new User(newUser).validate()).rejects.toThrow();
+      expect(() => new UserDomain(newUser)).toThrow();
     });
 
-    test('should throw a validation error if password does not contain letters', async () => {
+    // FIX: Đã thay thế .rejects.toThrow() bằng expect(() => ...).toThrow()
+    test('should throw a validation error if password does not contain letters', () => {
       newUser.password = '11111111';
-      await expect(new User(newUser).validate()).rejects.toThrow();
+      expect(() => new UserDomain(newUser)).toThrow();
     });
 
-    test('should throw a validation error if role is unknown', async () => {
+    // FIX: Đã thay thế .rejects.toThrow() bằng expect(() => ...).toThrow()
+    test('should throw a validation error if role is unknown', () => {
       newUser.role = 'invalid';
-      await expect(new User(newUser).validate()).rejects.toThrow();
+      expect(() => new UserDomain(newUser)).toThrow();
     });
   });
 
@@ -51,6 +59,7 @@ describe('User model', () => {
         password: 'password1',
         role: 'user',
       };
+      // NOTE: Giả định User là Mongoose Model. Test này không liên quan đến UserDomain.
       expect(new User(newUser).toJSON()).not.toHaveProperty('password');
     });
   });

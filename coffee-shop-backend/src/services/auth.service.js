@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const tokenService = require('./token.service');
-const userService = require('./user.service');
+const userService = require('../modules/user/services/user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
@@ -12,10 +12,22 @@ const { tokenTypes } = require('../config/tokens');
  * @returns {Promise<User>}
  */
 const loginUserWithEmailAndPassword = async (email, password) => {
-  const user = await userService.getUserByEmail(email);
+  let user;
+  try {
+    user = await userService.getUserByEmail(email);
+  } catch (err) {
+    // Nếu getUserByEmail ném lỗi NOT_FOUND, coi như user không tồn tại
+    if (err.statusCode === httpStatus.NOT_FOUND) {
+      user = null;
+    } else {
+      throw err; // các lỗi khác vẫn ném
+    }
+  }
+
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
+
   return user;
 };
 

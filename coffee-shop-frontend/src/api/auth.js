@@ -27,3 +27,10 @@ export async function forgotPassword(email) {
         body: { email }
     });
 }
+
+export async function resetPassword(token, newPassword) {
+    return request_without_response(`/auth/reset-password?token=${token}`, {
+        method: "POST",
+        body: { password: newPassword }
+    });
+}
