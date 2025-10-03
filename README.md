@@ -2,6 +2,10 @@
 
 A full-stack web application for managing a coffee shop, built with Vue.js frontend and Node.js/Express backend.
 
+## System architecture
+
+![Alt text](./system_architecture.png)
+
 ## System Requirements
 
 - Node.js 16.x or higher
