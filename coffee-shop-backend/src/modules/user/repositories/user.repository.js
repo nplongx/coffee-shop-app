@@ -10,6 +10,7 @@ class UserRepository extends BaseRepository {
 
   toPersistenceObject(entity, customMapper = (e) => e) {
     return super.toPersistenceObject(entity, (e) => ({
+      // _id: e.id, // map id trong domain entity thành _id trong MongoDB
       name: e.name,
       email: e.email,
       password: e.password,

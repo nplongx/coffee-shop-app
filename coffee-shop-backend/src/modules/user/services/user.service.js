@@ -7,7 +7,7 @@ const createUser = async (userBody) => {
   if (await userRepository.findUserByEmail(userBody.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
   }
-  const user = new UserDomain({ ...userBody, email: userBody.email, id: null });
+  const user = new UserDomain({ ...userBody, email: userBody.email, id: userBody._id });
   return userRepository.create(userRepository.toPersistenceObject(user));
 };
 

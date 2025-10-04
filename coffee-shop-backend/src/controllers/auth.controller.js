@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
+const { requireAuth, getAuth, clerkClient } = require('@clerk/express');
+const { objectId } = require('../validations/custom.validation');
 
 const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -9,8 +11,28 @@ const register = catchAsync(async (req, res) => {
 });
 
 const login = catchAsync(async (req, res) => {
-  const { email, password } = req.body;
-  const user = await authService.loginUserWithEmailAndPassword(email, password);
+  const { userId } = getAuth(req);
+
+  const user = await clerkClient.users.getUser(userId);
+
+  if (!user) {
+    return res.status(httpStatus.UNAUTHORIZED).send({ message: 'Invalid authentication credentials' });
+  }
+
+  try {
+    await userService.getUserByEmail(user.emailAddresses[0].emailAddress);
+  } catch (error) {
+    if (error.statusCode === httpStatus.NOT_FOUND) {
+      await userService.createUser({
+        _id: user.id, // Use Clerk's user ID as the database ID
+        name: `${user.firstName} ${user.lastName}`,
+        email: user.emailAddresses[0].emailAddress,
+      });
+    } else {
+      throw error;
+    } 
+  }
+
   const tokens = await tokenService.generateAuthTokens(user);
   res.send({ user, tokens });
 });

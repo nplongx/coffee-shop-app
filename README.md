@@ -45,7 +45,23 @@ cp coffee-shop-backend/.env.example coffee-shop-backend/.env
 docker network create coffee-shope-network
 ```
 
-4. Start the application using Docker Compose:
+4. Locate the `mongodb.conf` (in docker files) file and add the replica set details
+
+Add the following replica set details to `mongodb.conf` file
+
+```bash
+replication:
+  replSetName: "r0"
+```
+
+Initiate the replica set using `rs.initiate()`
+```bash
+docker exec -it <container_name_of_mongodb> mongo
+rs.initiate()
+```
+Reference: https://stackoverflow.com/questions/59571945/the-changestream-stage-is-only-supported-on-replica-sets-error-while-using-mo
+
+5. Start the application using Docker Compose:
 ```bash
 cd coffee-shop-frontend
 docker-compose up -d
@@ -93,16 +109,40 @@ npm run dev
 ### Frontend (.env.development)
 ```
 VITE_API_URL=http://localhost:3000/v1
+VITE_CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
 ```
 
 ### Backend (.env)
 ```
-NODE_ENV=development
-PORT=3001
-MONGODB_URL=mongodb://localhost:27017/coffee-shop
-JWT_SECRET=your-jwt-secret
+# Port number
+PORT=3000
+
+# URL of the Mongo DB
+MONGODB_URL=mongodb://127.0.0.1:27017/coffee-shop
+
+# JWT
+# JWT secret key
+JWT_SECRET=thisisasamplesecret
+# Number of minutes after which an access token expires
 JWT_ACCESS_EXPIRATION_MINUTES=30
+# Number of days after which a refresh token expires
 JWT_REFRESH_EXPIRATION_DAYS=30
+# Number of minutes after which a reset password token expires
+JWT_RESET_PASSWORD_EXPIRATION_MINUTES=10
+# Number of minutes after which a verify email token expires
+JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=10
+
+# SMTP configuration options for the email service
+# For testing, you can use a fake SMTP service like Ethereal: https://ethereal.email/create
+SMTP_HOST=email-server
+SMTP_PORT=587
+SMTP_USERNAME=email-server-username
+SMTP_PASSWORD=email-server-password
+EMAIL_FROM=support@yourapp.com
+
+# Clerk API keys
+CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
+CLERK_SECRET_KEY=your-clerk-secret-key
 ```
 
 ## Testing

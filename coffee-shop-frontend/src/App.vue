@@ -9,9 +9,39 @@
 </template>
 
 <script setup>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
+import { useAuth } from '@clerk/vue';
+import { useAuthStore } from './store/auth';
+import { login } from './api/auth';
+import { watch, onMounted } from 'vue';
+
+const { getToken, isSignedIn } = useAuth();
+const auth = useAuthStore();
+async function loginHandler() {
+  try {
+    const token = await getToken.value();
+    const data = await login(token);
+    console.log('API response:', data); // Kiểm tra dữ liệu trả về
+    if (data?.tokens?.access?.token) {
+      auth.login(data.tokens.access.token);
+    } else {
+      console.error('Invalid data structure:', data);
+    }
+  } catch (err) {
+    console.error('Auth sync failed:', err);
+  }
+}
+
+watch(isSignedIn, async (newVal) => {
+  if (newVal) {
+    await loginHandler();
+  } else {
+    auth.logout();
+  }
+});
 </script>
+
 
 <style>
 /* Reset cơ bản */

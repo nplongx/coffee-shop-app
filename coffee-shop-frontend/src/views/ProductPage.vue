@@ -15,11 +15,12 @@ onMounted(async () => {
       // Chuyển hướng người dùng đến trang đăng nhập nếu cần
       return
     }
+    console.log("Using token:", token)
     const res = await getProducts(token)
     console.log("API response:", res)
     products.value = res.results
   } catch (err) {
-    console.error("Failed to fetch products:", err)
+    console.error("Failed to fetch products:", err) 
   }
 })
 </script>

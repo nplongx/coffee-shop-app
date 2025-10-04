@@ -1,10 +1,7 @@
 import { request, request_without_response } from "./api";
 
-export async function login(email, password) {
-    return request("/auth/login", {
-        method: "POST",
-        body: { email, password }
-    });
+export async function login(token) {
+    return request("/auth/protected", { token });
 }
 
 export async function logout(token) {

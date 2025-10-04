@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue"
 import { useAuthStore } from "@/store/auth"
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/vue"
 
 const hoverItem = ref("")
 const auth = useAuthStore()
@@ -46,13 +47,12 @@ function handleLogout() {
         </ul>
       </li>
 
-      <!-- Login / Logout -->
-      <li v-if="!auth.isLoggedIn" class="nav-item">
-        <a href="/login">Login</a>
-      </li>
-      <li v-else class="nav-item">
-        <a href="#" @click.prevent="handleLogout">Logout</a>
-      </li>
+      <SignedOut>
+        <SignInButton />
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
     </ul>
   </nav>
 </template>

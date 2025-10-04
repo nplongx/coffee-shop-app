@@ -28,7 +28,7 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
 /**
  * Save a token
  * @param {string} token
- * @param {ObjectId} userId
+ * @param {string} userId
  * @param {Moment} expires
  * @param {string} type
  * @param {boolean} [blacklisted]

@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
+const syncModelToMeilisearch = require('../services/meilisearch.service');
+const client = require('../config/meilisearch');
 
 const userSchema = mongoose.Schema(
   {
+    _id: {
+      type: String, // Use Clerk's user ID as the MongoDB _id
+      // required: true,
+      trim: true,
+      unique: true,
+    },
     name: {
       type: String,
       required: true,
@@ -20,7 +27,6 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       trim: true,
       minlength: 8,
       private: true, // used by the toJSON plugin
@@ -29,10 +35,6 @@ const userSchema = mongoose.Schema(
       type: String,
       enum: roles,
       default: 'user',
-    },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
     },
   },
   {
@@ -77,5 +79,7 @@ userSchema.pre('save', async function (next) {
  * @typedef User
  */
 const User = mongoose.model('User', userSchema);
+const userIndex = client.index('users');
+syncModelToMeilisearch(User, userIndex);
 
 module.exports = User;

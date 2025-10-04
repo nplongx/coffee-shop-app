@@ -13,6 +13,8 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const client = require('./config/meilisearch');
+const { clerkMiddleware } = require('@clerk/express');
 
 const app = express();
 
@@ -20,6 +22,19 @@ if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
+
+//TODO; Remove this block later
+// app.js hoặc server.js
+(async () => {
+  try {
+    await client.createIndex('users', { primaryKey: 'id' });
+    console.log("Index 'users' ready with primaryKey 'id'");
+  } catch (e) {
+    if (e.code !== 'index_already_exists') {
+      console.error('Meilisearch error:', e);
+    }
+  }
+})();
 
 // set security HTTP headers
 app.use(helmet());
@@ -33,6 +48,8 @@ app.use(express.urlencoded({ extended: true }));
 // sanitize request data
 app.use(xss());
 app.use(mongoSanitize());
+
+app.use(clerkMiddleware());
 
 // gzip compression
 app.use(compression());
@@ -49,8 +66,7 @@ passport.use('jwt', jwtStrategy);
 if (config.env === 'production') {
   app.use('/v1/auth', authLimiter);
 }
-
-// v1 api routes
+// v1 api routess
 app.use('/v1', routes);
 
 // send back a 404 error for any unknown api request
